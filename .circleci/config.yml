@@ -1,0 +1,51 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@3.0.1
+  cypress: cypress-io/cypress@1.25.1
+  aws-ecr: circleci/aws-ecr@6.12.0
+  aws-eks: circleci/aws-eks@1.0.0
+  helm: circleci/helm@1.2.0
+  terraform: circleci/terraform@2.1.0
+
+workflows:
+  build_test_deploy:
+    jobs:
+      - build
+      - unit_tests:
+          requires:
+            - build
+      - cypress/run:
+          requires:
+            - unit_tests
+
+jobs:
+  build:
+    executor: node
+    steps:
+      - checkout
+      - node/install-packages:
+          override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
+  unit_tests:
+    executor: node
+    steps:
+      - checkout
+      - node/install-packages:
+          override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci  
+      - run:
+          name: Test application 
+          command: |
+            TEST=$(circleci tests glob **/src/**/*.test.js | circleci tests split --split-by=timings)
+            npm test $TEST
+      - store_test_results:
+          path: ~/project/test-results
+      - store_artifacts:
+          path: ~/project/test-results/junit.xml
+
+executors:
+  node:
+    docker: 
+      - image: cimg/node:14.0.0
+  base:
+    docker:
+      - image: cimg/base:stable
