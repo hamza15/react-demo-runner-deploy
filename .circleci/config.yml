@@ -27,7 +27,7 @@ workflows:
           tag: $CIRCLE_SHA1
           repo: react-demo-runner-deploy
           requires:
-            - integration_tests
+            - cypress/run
 jobs:
   build:
     executor: node
