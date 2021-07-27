@@ -67,7 +67,7 @@ jobs:
           chart: ./helm-charts/react-app-chart
           release-name: react-app-chart
           update-repositories: false
-          values-to-override: image.tag=${CIRCLE_SHA1},image.repository=${AWS_ECR_ACCOUNT_URL}
+          values-to-override: image.tag=${CIRCLE_SHA1},image.repository=${AWS_CONTAINER_ID}
 
 executors:
   node:
