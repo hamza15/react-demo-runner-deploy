@@ -58,7 +58,7 @@ jobs:
     steps:
       - checkout
       - run: aws --version
-
+      - run: kubectl get pods
 executors:
   node:
     docker: 
