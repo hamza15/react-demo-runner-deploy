@@ -57,8 +57,7 @@ jobs:
     resource_class: ryanpedersen/runner-deploy-demo
     steps:
       - checkout
-      - run: kubectl get namespaces
-      - run: kubectl get pods
+      - run: aws --version
 
 executors:
   node:
