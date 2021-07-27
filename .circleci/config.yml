@@ -58,7 +58,10 @@ jobs:
     steps:
       - checkout
       - run: aws --version
-      - run: aws sts get-caller-identity
+      - run: aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}
+      - run: kubectl get namespaces
+      - run: kubectl get pods
+
 executors:
   node:
     docker: 
