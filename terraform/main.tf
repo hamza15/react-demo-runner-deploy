@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "eu-weset-1"
 }
 
 data "aws_availability_zones" "azs" {
@@ -7,14 +7,14 @@ data "aws_availability_zones" "azs" {
 }
 
 locals {
-  cluster_name = "rp-ccits-demo-cluster"
+  cluster_name = "react-demo-runner-deploy-cluster"
 }
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 2.48"
 
-  name = "rp-ccits-demo-vpc"
+  name = "react-demo-runner-deploy-vpc"
   cidr = "10.0.0.0/16"
 
   azs                  = slice(data.aws_availability_zones.azs.names, 0, 2)
