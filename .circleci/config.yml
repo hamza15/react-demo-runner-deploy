@@ -12,9 +12,11 @@ workflows:
   build_test_deploy:
     jobs:
       - build
+      - deps_audit
       - unit_tests:
           requires:
             - build
+            - deps_audit
       - cypress/run:
           requires:
             - unit_tests
@@ -45,6 +47,13 @@ jobs:
       - checkout
       - node/install-packages:
           override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
+
+  deps_audit:
+    executor: node
+    steps:
+      - checkout
+      - run: npx audit-ci -c
+
   unit_tests:
     parallelism: 2
     executor: node
@@ -61,6 +70,7 @@ jobs:
           path: ~/project/test-results
       - store_artifacts:
           path: ~/project/test-results/junit.xml
+
   deploy_runner:
     machine: true
     resource_class: ryanpedersen/runner-deploy-demo
