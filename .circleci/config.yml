@@ -28,7 +28,9 @@ workflows:
           repo: react-demo-runner-deploy
           requires:
             - cypress/run
-      - deploy_runner
+      - deploy_runner:
+          requires:
+            - build_push_ecr
 jobs:
   build:
     executor: node
@@ -56,7 +58,16 @@ jobs:
     machine: true
     resource_class: ryanpedersen/runner-deploy-demo
     steps:
-      - run: echo "Hi I'm on Runners!"
+      - checkout
+      - run: aws --version
+      - run: aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}
+      - run: kubectl get namespaces
+      - run: kubectl get pods
+      - helm/upgrade-helm-chart:
+          chart: ./helm-charts/react-app-chart
+          release-name: react-app-chart
+          update-repositories: false
+          values-to-override: image.tag=${CIRCLE_SHA1},image.repository=${AWS_CONTAINER_ID}
 
 executors:
   node:
