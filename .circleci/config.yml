@@ -28,7 +28,9 @@ workflows:
           repo: react-demo-runner-deploy
           requires:
             - cypress/run
-      - deploy_runner
+      - deploy_runner:
+          requires:
+            - build_push_ecr
 jobs:
   build:
     executor: node
@@ -61,6 +63,10 @@ jobs:
       - run: aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}
       - run: kubectl get namespaces
       - run: kubectl get pods
+      - helm/upgrade-helm-chart:
+          chart: ./helm-charts/react-app-chart
+          release-name: react-app-chart
+          values-to-override: image.tag=${CIRCLE_SHA1},image.repository=${AWS_ECR_ACCOUNT_URL}
 
 executors:
   node:
