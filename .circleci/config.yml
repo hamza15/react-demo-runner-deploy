@@ -56,7 +56,9 @@ jobs:
     machine: true
     resource_class: ryanpedersen/runner-deploy-demo
     steps:
-      - run: echo "Hi I'm on Runners!"
+      - checkout
+      - run: kubectl get namespaces
+      - run: kubectl get pods
 
 executors:
   node:
