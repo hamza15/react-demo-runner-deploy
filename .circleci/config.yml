@@ -18,8 +18,21 @@ workflows:
       - cypress/run:
           requires:
             - unit_tests
+<<<<<<< HEAD
       - deploy_runner
 
+=======
+      - aws-ecr/build-and-push-image:
+          executor:
+            name: aws-ecr/default
+            use-docker-layer-caching: true
+          context: rp-deploy-secrets
+          name: build_push_ecr
+          tag: $CIRCLE_SHA1
+          repo: react-demo-runner-deploy
+          requires:
+            - cypress/run
+>>>>>>> 72f80eea89159dac742af93b942caf6f5c9da41f
 jobs:
   build:
     executor: node
@@ -28,6 +41,7 @@ jobs:
       - node/install-packages:
           override-ci-command: CYPRESS_INSTALL_BINARY=0 npm ci
   unit_tests:
+    parallelism: 2
     executor: node
     steps:
       - checkout
