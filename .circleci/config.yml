@@ -63,7 +63,7 @@ jobs:
       - run: aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}
       - run: kubectl get namespaces
       - run: kubectl get pods
-      - helm/install-helm-chart:
+      - helm/upgrade-helm-chart:
           chart: ./helm-charts/react-app-chart
           release-name: react-app-chart
           update-repositories: false
