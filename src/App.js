@@ -24,8 +24,8 @@ const App = () => {
       </header>
       <div className='body'>
         <Button 
-          // variant="dark"
-          variant="outline-dark"
+          variant="dark"
+          // variant="outline-dark"
           onClick={() => getRandomEntry()}
          >
           hear what the duck says
