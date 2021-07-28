@@ -1,12 +1,5 @@
 version: 2.1
 
-orbs:
-  node: circleci/node@3.0.1
-  cypress: cypress-io/cypress@1.25.1
-  aws-ecr: circleci/aws-ecr@6.12.0
-  helm: circleci/helm@1.2.0
-  shiftleft: shiftleft/shiftleft@1.0.6
-
 workflows:
   build_test_deploy:
     jobs:
@@ -41,6 +34,7 @@ workflows:
       - deploy_runner:
           requires:
             - hold
+
 jobs:
   build:
     executor: node
@@ -93,6 +87,13 @@ jobs:
           release-name: react-app-chart
           update-repositories: false
           values-to-override: image.tag=${CIRCLE_SHA1},image.repository=${AWS_CONTAINER_ID}
+
+orbs:
+  node: circleci/node@3.0.1
+  cypress: cypress-io/cypress@1.25.1
+  aws-ecr: circleci/aws-ecr@6.12.0
+  helm: circleci/helm@1.2.0
+  shiftleft: shiftleft/shiftleft@1.0.6
 
 executors:
   node:
