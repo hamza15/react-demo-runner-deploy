@@ -13,10 +13,12 @@ workflows:
     jobs:
       - build
       - deps_audit
+      - sast
       - unit_tests:
           requires:
             - build
             - deps_audit
+            - sast
       - cypress/run:
           requires:
             - unit_tests
@@ -53,6 +55,16 @@ jobs:
     steps:
       - checkout
       - run: npx audit-ci -c
+
+  sast:
+    executor: base
+    steps:
+      - checkout
+      - shiftleft/analyze:
+          app: react-demo-runner-deploy
+          target: /home/circleci/project/src
+          language: js
+          cpg: true
 
   unit_tests:
     parallelism: 2
