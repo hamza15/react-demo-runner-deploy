@@ -81,7 +81,7 @@ jobs:
     resource_class: hamza-runner-ns/hamza-rc
     steps:
       - checkout
-      - ls
+      - run: ls
 
 orbs:
   node: circleci/node@3.0.1
