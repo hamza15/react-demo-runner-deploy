@@ -18,10 +18,10 @@ workflows:
           executor:
             name: aws-ecr/default
             use-docker-layer-caching: true
-          context: rp-deploy-secrets
+          context: hamza-deploy-secrets
           name: build_push_ecr
           tag: $CIRCLE_SHA1
-          repo: react-demo-runner-deploy
+          repo: hamza-react-demo-runner-deploy
           requires:
             - cypress/run
       - hold:
