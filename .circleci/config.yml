@@ -47,7 +47,7 @@ jobs:
     executor: node
     steps:
       - checkout
-      - run: npx audit-ci -c
+      - run: ls
 
   sast:
     executor: base
