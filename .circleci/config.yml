@@ -78,15 +78,10 @@ jobs:
 
   deploy_runner:
     machine: true
-    resource_class: ryanpedersen/runner-deploy-demo
+    resource_class: hamza-runner-ns/hamza-rc
     steps:
       - checkout
-      - run: aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}
-      - helm/upgrade-helm-chart:
-          chart: ./helm-charts/react-app-chart
-          release-name: react-app-chart
-          update-repositories: false
-          values-to-override: image.tag=${CIRCLE_SHA1},image.repository=${AWS_CONTAINER_ID}
+      - ls
 
 orbs:
   node: circleci/node@3.0.1
